@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuriaAI — AI Productivity & Meeting Intelligence</title>
+  <meta name="description" content="Enhance your workflow & productivity with NeuriaAI. Enterprise-grade meeting intelligence, decision governance, and automated task boards across 15 specialized industries.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body class="neuria-body">
+
+  <!-- Setup Warning Banner (Only visible if GEMINI_API_KEY / GOOGLE_API_KEY missing) -->
+  <div id="gemini-setup-banner" class="gemini-banner hidden">
+    <div class="container banner-inner">
+      <span class="banner-icon">⚡</span>
+      <div class="banner-text">
+        <strong>NeuriaAI Setup Notice:</strong> <code>GEMINI_API_KEY</code> or <code>GOOGLE_API_KEY</code> environment variable is not detected. NeuriaAI is operating in deterministic RAG & rule-based offline extraction mode. Set your API key to activate Gemini models.
+      </div>
+      <button class="banner-close-btn" onclick="document.getElementById('gemini-setup-banner').classList.add('hidden')">✕</button>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- FLOATING NAVBAR (STICKY, BLURRED PILL) -->
+  <!-- ========================================================================= -->
+  <header class="floating-nav-wrapper">
+    <div class="floating-navbar">
+      <!-- Left: Logo -->
+      <a href="#landing" class="nav-brand" onclick="MeetwellApp.showLandingView()">
+        <span class="logo-mark">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="9" stroke="url(#goldGradientLogo)" stroke-width="2.2" stroke-dasharray="14 4" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="4.5" fill="url(#goldGradientLogo)"/>
+            <defs>
+              <linearGradient id="goldGradientLogo" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#F0B86E"/>
+                <stop offset="1" stop-color="#D4954A"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+        <span class="brand-text">Neuria<span class="brand-accent">AI</span></span>
+      </a>
+
+      <!-- Center: Nav Links -->
+      <nav class="desktop-nav">
+        <a href="#landing-features" class="nav-link">Features</a>
+        <a href="#landing-industries" class="nav-link">Industries</a>
+        <a href="#landing-faqs" class="nav-link">FAQs</a>
+        <a href="#landing-about" class="nav-link">About</a>
+        <a href="#app-dashboard" class="nav-link nav-link-app" onclick="MeetwellApp.openApp()">Platform</a>
+      </nav>
+
+      <!-- Right: Action Buttons -->
+      <div class="header-actions">
+        <!-- Persistent Workspace Chip in Header -->
+        <div id="header-ws-chip" class="header-ws-chip hidden" onclick="MeetwellApp.openApp()">
+          <span class="ws-chip-dot"></span>
+          <span id="header-ws-name" class="ws-chip-name">Workspace</span>
+          <span id="header-ws-ind" class="ws-chip-ind">IT</span>
+        </div>
+
+        <button id="nav-open-app-btn" class="btn-pill-gold" onclick="MeetwellApp.openApp()">
+          <span>Launch App</span>
+          <span class="pill-sparkle">✦</span>
+        </button>
+
+        <button id="mobile-menu-toggle" class="mobile-toggle-btn" aria-label="Toggle navigation menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Slide-down Menu -->
+    <div id="mobile-nav-panel" class="mobile-nav-panel">
+      <a href="#landing" class="mobile-nav-link" onclick="MeetwellApp.closeMobileMenu(); MeetwellApp.showLandingView();">Overview</a>
+      <a href="#landing-features" class="mobile-nav-link" onclick="MeetwellApp.closeMobileMenu()">Features</a>
+      <a href="#landing-industries" class="mobile-nav-link" onclick="MeetwellApp.closeMobileMenu()">Industries</a>
+      <a href="#landing-faqs" class="mobile-nav-link" onclick="MeetwellApp.closeMobileMenu()">FAQs</a>
+      <a href="#landing-about" class="mobile-nav-link" onclick="MeetwellApp.closeMobileMenu()">About</a>
+      <button class="btn-pill-gold full-width" onclick="MeetwellApp.openApp(); MeetwellApp.closeMobileMenu();">
+        <span>Launch Platform ✦</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 1: LANDING PAGE -->
+  <!-- ========================================================================= -->
+  <main id="view-landing" class="spa-view active">
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <!-- Soft Gold Radial Glows and Faint Dotted Texture -->
+      <div class="hero-glow-top-left"></div>
+      <div class="hero-glow-top-right"></div>
+      <div class="hero-dotted-grid"></div>
+
+      <div class="container hero-container">
+        
+        <!-- Badge -->
+        <div class="hero-pill-badge">
+          <span class="badge-sparkle">✦</span>
+          <span>NEXT-GEN AI PRODUCTIVITY & MEETING INTELLIGENCE</span>
+        </div>
+
+        <!-- 3-Line Large Gradient Headline -->
+        <div class="hero-headline-wrap">
+          <h1 class="hero-headline">
+            <span class="headline-dim">Enhance</span><br>
+            <span class="headline-mid">your workflow &</span><br>
+            <span class="headline-white">
+              <span class="gold-sparkle">✦</span> productivity 
+              <span class="gold-orb-wrapper">
+                <span class="gold-orb-ring">
+                  <span class="gold-orb-core">
+                    <svg class="orb-wave-svg" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 12C7 9 9 15 12 12C15 9 17 15 20 12" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                </span>
+              </span> 
+              AI
+            </span>
+          </h1>
+        </div>
+
+        <!-- Subtext -->
+        <p class="hero-subtext">
+          Boost engagement and automate conversations with your AI platform designed to understand, assist, and convert messy transcripts into confirmed decisions, verified action items, and executive reports.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="hero-cta-group">
+          <button class="btn-solid-white" onclick="MeetwellApp.startWorkspaceWizard()">
+            <span>Get Started</span>
+          </button>
+          <button class="btn-gold-glow" onclick="MeetwellApp.openApp()">
+            <span>Start Free Trial</span>
+          </button>
+        </div>
+
+        <!-- DIRECT MEETING INPUT CARD (HERO INTERACTIVE INGESTION) -->
+        <div class="hero-direct-input-card">
+          <div class="card-glow-overlay"></div>
+          <div class="input-card-header">
+            <div>
+              <span class="small-caps-label text-gold">✦ DIRECT MEETING INPUT</span>
+              <h3 class="hero-card-title">PASTE YOUR MEETING NOTES & GENERATE INSTANT REPORT</h3>
+            </div>
+            <div class="input-actions-row">
+              <button type="button" class="btn-ghost-pill" onclick="MeetwellApp.loadSampleMeetingText('hero-notes-input')">
+                <span>⚡ Load Example Notes</span>
+              </button>
+              <button type="button" class="btn-ghost-pill danger" onclick="document.getElementById('hero-notes-input').value = ''">
+                <span>Clear</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-input-row mt-3">
+            <div class="form-group flex-1">
+              <label class="config-label">MEETING TITLE</label>
+              <input type="text" id="hero-title-input" class="neuria-input" placeholder="e.g. Q4 Executive Operations & Strategy Sync">
+            </div>
+            <div class="form-group flex-1">
+              <label class="config-label">INDUSTRY DOMAIN (15 SECTORS)</label>
+              <select id="hero-industry-select" class="neuria-select">
+                <!-- Populated dynamically with all 15 industries -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <label class="config-label">MEETING MINUTES / TRANSCRIPT</label>
+            <textarea id="hero-notes-input" class="neuria-textarea" rows="5" placeholder="Paste your meeting notes, minutes, or transcript here... (Or click '⚡ Load Example Notes' above to populate instantly)"></textarea>
+          </div>
+
+          <div class="hero-submit-row mt-4">
+            <button type="button" class="btn-pill-gold" onclick="MeetwellApp.submitHeroMeetingInput()">
+              <span>Generate Executive Report</span>
+              <span class="pill-sparkle">✦</span>
+            </button>
+            <span class="hero-submit-hint">✦ Zero sign-up required. In-memory vector indexing. Instant PDF/TXT download.</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- PRODUCT MOCKUP SECTION -->
+    <!-- ========================================================================= -->
+    <section class="mockup-section">
+      <div class="container">
+        <!-- Rounded 40px Container with Warm Desert Dusk Landscape Background -->
+        <div class="desert-mockup-container">
+          <div class="desert-overlay"></div>
+          
+          <!-- Tablet / Laptop Frame -->
+          <div class="device-frame">
+            <div class="device-top-notch"></div>
+            <div class="device-screen">
+              
+              <!-- Mockup UI: Left Sidebar -->
+              <div class="mockup-sidebar">
+                <div class="mockup-brand">
+                  <span class="logo-mark-sm"></span>
+                  <span class="mockup-brand-text">NeuriaAI</span>
+                </div>
+
+                <div class="mockup-nav-group mt-4">
+                  <div class="mockup-nav-item active">
+                    <span class="m-icon">📊</span>
+                    <span>Dashboard</span>
+                  </div>
+                  <div class="mockup-nav-item">
+                    <span class="m-icon">📅</span>
+                    <span>Calendar</span>
+                  </div>
+                  <div class="mockup-nav-item">
+                    <span class="m-icon">🎙️</span>
+                    <span>Meetings</span>
+                  </div>
+                  <div class="mockup-nav-item">
+                    <span class="m-icon">📁</span>
+                    <span>Projects</span>
+                  </div>
+                  <div class="mockup-nav-item">
+                    <span class="m-icon">📈</span>
+                    <span>Analytics</span>
+                  </div>
+                </div>
+
+                <!-- Highlighted White Pill Button "✦ Ask AI" -->
+                <div class="mockup-ask-btn-wrap mt-4">
+                  <button class="mockup-ask-btn" onclick="MeetwellApp.openApp(); MeetwellApp.switchPane('ask');">
+                    <span>✦ Ask AI</span>
+                  </button>
+                </div>
+
+                <div class="mockup-workspaces-section mt-5">
+                  <div class="mockup-ws-title">
+                    <span>WORKSPACES</span>
+                    <span class="m-add">+</span>
+                  </div>
+                  <div class="mockup-ws-item blurred">Executive Board Sync</div>
+                  <div class="mockup-ws-item blurred">Sprint 44 Engineering</div>
+                  <div class="mockup-ws-item blurred">Hospital Operations Q3</div>
+                </div>
+              </div>
+
+              <!-- Mockup UI: Main Body -->
+              <div class="mockup-main">
+                <!-- Top Bar -->
+                <div class="mockup-topbar">
+                  <div class="mockup-search-box">
+                    <span class="m-search-icon">🔍</span>
+                    <input type="text" placeholder="Search meetings, decisions, deliverables..." readonly>
+                  </div>
+                  <div class="mockup-topbar-right">
+                    <div class="mockup-toggle-pill">
+                      <span class="toggle-dot"></span>
+                    </div>
+                    <span class="mockup-bell">🔔</span>
+                    <div class="mockup-user-avatar">
+                      <span class="avatar-circle">R</span>
+                      <span class="avatar-meta">
+                        <strong class="user-name">Robert</strong>
+                        <span class="user-role">Product Designer</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Center Display: Glossy Gold Orb Greeting -->
+                <div class="mockup-center-content">
+                  <div class="center-gold-orb">
+                    <div class="orb-inner-wave">
+                      <svg viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" stroke="url(#mockupGold)" stroke-width="2.5"/>
+                        <path d="M8 20C12 14 16 26 20 20C24 14 28 26 32 20" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                        <defs>
+                          <linearGradient id="mockupGold" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#F0B86E"/>
+                            <stop offset="1" stop-color="#D4954A"/>
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <h2 class="mockup-greeting">Hi Robert</h2>
+                  <p class="mockup-subtext">Ask anything about your meetings?</p>
+
+                  <div class="mockup-quick-chips">
+                    <span class="m-chip" onclick="MeetwellApp.openApp(); MeetwellApp.switchPane('reports');">📊 Generate Executive Summary</span>
+                    <span class="m-chip" onclick="MeetwellApp.openApp(); MeetwellApp.switchPane('decisions');">📌 Confirmed Decisions</span>
+                    <span class="m-chip" onclick="MeetwellApp.openApp(); MeetwellApp.switchPane('actions');">⚙ Action Items Table</span>
+                  </div>
+                </div>
+
+                <!-- Bottom Blurred Chat Input Box -->
+                <div class="mockup-bottom-chat">
+                  <div class="mockup-chat-bar" onclick="MeetwellApp.openApp(); MeetwellApp.switchPane('ask');">
+                    <span class="m-sparkle">✦</span>
+                    <span class="chat-placeholder">Type a question about past sprint blockers, deliverables, or audit points...</span>
+                    <span class="chat-send-arrow">↗</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editorial Marquee Ticker -->
+    <div class="neuria-ticker">
+      <div class="ticker-inner">
+        <span>IN-MEMORY CHROMADB VECTORS</span>
+        <span class="ticker-star">✦</span>
+        <span>ZERO DISK PERSISTENCE</span>
+        <span class="ticker-star">✦</span>
+        <span>15 SPECIALIZED INDUSTRY DOMAINS</span>
+        <span class="ticker-star">✦</span>
+        <span>STRICT WORKSPACE ISOLATION</span>
+        <span class="ticker-star">✦</span>
+        <span>GROUNDED CITATIONS & PAGE EXCERPTS</span>
+        <span class="ticker-star">✦</span>
+        <span>AUDIT-READY PDF & CSV EXPORTS</span>
+        <span class="ticker-star">✦</span>
+        <span>GOOGLE GEMINI 3.5 INTELLIGENCE ENGINE</span>
+        <span class="ticker-star">✦</span>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- FEATURES SECTION -->
+    <!-- ========================================================================= -->
+    <section id="landing-features" class="features-section">
+      <div class="container">
+        <div class="section-header-center">
+          <span class="small-caps-label text-gold">CAPABILITIES</span>
+          <h2 class="section-title">INTELLIGENCE AT ENTERPRISE SPEED.</h2>
+          <p class="section-lead">From raw discussions to signed-off deliverables, NeuriaAI processes meeting transcripts with strict factual attribution and zero hallucinated commitments.</p>
+        </div>
+
+        <div class="features-grid mt-6">
+          <div class="feature-card">
+            <div class="feature-icon">✦</div>
+            <h3 class="feature-title">AI Chat & Semantic Search</h3>
+            <p class="feature-desc">Query multiple meetings with natural language. Returns exact document name, page citations, and verbatim context excerpts.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3 class="feature-title">Executive Meeting Summaries</h3>
+            <p class="feature-desc">Synthesize short, standard, or technical detailed summaries. Highlights participants, agenda topics, and strategic directives.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">📌</div>
+            <h3 class="feature-title">Decision Governance Tracker</h3>
+            <p class="feature-desc">Classify confirmed decisions with explicit business rationale, while tracking proposals under review and unresolved debates.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">⚙</div>
+            <h3 class="feature-title">Action Items & Smart Tasks</h3>
+            <p class="feature-desc">Identify actionable tasks with assignees, teams, deadlines, and priorities. Interactive Kanban board with live status updates.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3 class="feature-title">Risk Detection & Mitigation</h3>
+            <p class="feature-desc">Flag technical, timeline, financial, operational, and regulatory risks with severity tiers and assigned mitigation owners.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3 class="feature-title">100% In-Memory Privacy</h3>
+            <p class="feature-desc">Zero files written to disk. Embeddings live in ephemeral RAM ChromaDB collections with mathematical workspace isolation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- INDUSTRIES SECTION -->
+    <!-- ========================================================================= -->
+    <section id="landing-industries" class="industries-section">
+      <div class="container">
+        <div class="section-header-split">
+          <div>
+            <span class="small-caps-label text-gold">15 DOMAIN PROFILES</span>
+            <h2 class="section-title">BUILT FOR YOUR INDUSTRY.</h2>
+          </div>
+          <p class="section-lead">Unlike generic meeting summarizers, NeuriaAI dynamically tunes prompts, extraction rubrics, KPI metrics, and risk categories to your sector.</p>
+        </div>
+
+        <div id="landing-industries-list" class="industries-num-list mt-6">
+          <!-- Populated dynamically by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- FAQ SECTION -->
+    <!-- ========================================================================= -->
+    <section id="landing-faqs" class="faqs-section">
+      <div class="container">
+        <div class="section-header-center">
+          <span class="small-caps-label text-gold">FREQUENTLY ASKED QUESTIONS</span>
+          <h2 class="section-title">EVERY DETAIL CLARIFIED.</h2>
+        </div>
+
+        <div class="faqs-accordion-wrap mt-6">
+          <div class="faq-item" onclick="this.classList.toggle('active')">
+            <div class="faq-question">
+              <span>How does NeuriaAI analyze meeting transcripts?</span>
+              <span class="faq-chevron">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>NeuriaAI chunks uploaded PDF/TXT transcripts and direct notes, computes dense vector embeddings using SentenceTransformers, and indexes them in an ephemeral in-memory ChromaDB client. Queries and extraction requests run through domain-specific Google Gemini prompts grounded strictly in retrieved excerpts.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="this.classList.toggle('active')">
+            <div class="faq-question">
+              <span>Which industries are supported out of the box?</span>
+              <span class="faq-chevron">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>We provide 15 deep ontology profiles: IT & Software Development, Healthcare & Hospitals, Banking & Finance, Education & Universities, Manufacturing & Production, Construction & Real Estate, Retail & E-commerce, Human Resources, Marketing, Sales, Logistics & Supply Chain, Legal & Corporate, Government, Consulting, and General Business—plus a fully customizable Other Industry option.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="this.classList.toggle('active')">
+            <div class="faq-question">
+              <span>Is my meeting data stored or persisted on disk?</span>
+              <span class="faq-chevron">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>No. NeuriaAI utilizes an entirely in-memory ChromaDB vector client. Uploaded documents, chunk vectors, and generated reports exist solely in memory for the duration of the server session. Report downloads (PDF, TXT, CSV) are streamed directly from RAM BytesIO buffers.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="this.classList.toggle('active')">
+            <div class="faq-question">
+              <span>How does NeuriaAI guarantee workspace isolation?</span>
+              <span class="faq-chevron">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Every workspace is partitioned with a unique UUID. All ChromaDB vector additions and similarity queries apply a strict metadata filter <code>{"workspace_id": id}</code>. A query in Workspace A cannot access, retrieve, or cite chunks stored in Workspace B.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="this.classList.toggle('active')">
+            <div class="faq-question">
+              <span>Can I download audit-ready executive reports?</span>
+              <span class="faq-chevron">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Yes. You can stream branded in-memory PDF reports formatted with ReportLab, comprehensive raw TXT briefings, or CSV action item matrices with full task accountability fields (assignee, team, deadline, status, priority).</p>
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="this.classList.toggle('active')">
+            <div class="faq-question">
+              <span>Does NeuriaAI invent action items or fabricate KPI numbers?</span>
+              <span class="faq-chevron">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Never. System prompts enforce strict anti-hallucination guardrails: if an assignee, deadline, or KPI metric is not explicitly stated in the source text, it is marked as 'Not specified'. If an answer is not in the text, RAG Ask replies exactly: "I couldn't find this information in the uploaded meeting documents."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- ABOUT SECTION -->
+    <!-- ========================================================================= -->
+    <section id="landing-about" class="about-section">
+      <div class="container">
+        <div class="about-card">
+          <span class="small-caps-label text-gold">ABOUT NEURIAAI</span>
+          <h2 class="about-headline">PLAN THE PRESENT. BUILD THE FUTURE.</h2>
+          <p class="about-paragraph">
+            Meetings are where organizations make their biggest commitments, yet 70% of action items and critical discussion nuances are lost in unread recordings and scattered notes. NeuriaAI was engineered to bridge this gap: an enterprise intelligence layer that captures, classifies, and tracks operational reality with zero friction and absolute privacy.
+          </p>
+
+          <div class="about-stats-grid mt-6">
+            <div class="about-stat-item">
+              <span class="stat-number">15</span>
+              <span class="stat-label">Domain Ontologies</span>
+            </div>
+            <div class="about-stat-item">
+              <span class="stat-number">100%</span>
+              <span class="stat-label">In-Memory Vectors</span>
+            </div>
+            <div class="about-stat-item">
+              <span class="stat-number">0</span>
+              <span class="stat-label">Disk Persistence</span>
+            </div>
+            <div class="about-stat-item">
+              <span class="stat-number">&lt;120ms</span>
+              <span class="stat-label">Retrieval Latency</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- FOOTER -->
+    <!-- ========================================================================= -->
+    <footer class="neuria-footer">
+      <div class="container">
+        <!-- Footer Top Grid -->
+        <div class="footer-top-grid">
+          <!-- Left Column -->
+          <div class="footer-brand-col">
+            <div class="nav-brand">
+              <span class="logo-mark">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="9" stroke="url(#goldGradientFoot)" stroke-width="2.2" stroke-dasharray="14 4" stroke-linecap="round"/>
+                  <circle cx="12" cy="12" r="4.5" fill="url(#goldGradientFoot)"/>
+                  <defs>
+                    <linearGradient id="goldGradientFoot" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#F0B86E"/>
+                      <stop offset="1" stop-color="#D4954A"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </span>
+              <span class="brand-text">Neuria<span class="brand-accent">AI</span></span>
+            </div>
+            <h4 class="footer-slogan mt-4">Plan The Present. Build The Future.</h4>
+            <p class="footer-desc mt-2">Using NeuriaAI, you can automate conversations, enhance engagement, and improve customer service.</p>
+          </div>
+
+          <!-- Middle Column: Menu -->
+          <div class="footer-links-col">
+            <span class="small-caps-label text-gold">MENU</span>
+            <ul class="footer-links-list mt-3">
+              <li><a href="#landing">Home</a></li>
+              <li><a href="#landing-about">About</a></li>
+              <li><a href="#landing-features">Features</a></li>
+              <li><a href="#landing-faqs">FAQs</a></li>
+              <li><a href="#app-dashboard" onclick="MeetwellApp.openApp()">Workspace</a></li>
+            </ul>
+          </div>
+
+          <!-- Right Column: Utility Pages -->
+          <div class="footer-links-col">
+            <span class="small-caps-label text-gold">UTILITY PAGES</span>
+            <ul class="footer-links-list mt-3">
+              <li><a href="#landing-features">Instruction</a></li>
+              <li><a href="#landing">Style Guide</a></li>
+              <li><a href="#landing-trust">Licenses</a></li>
+              <li><a href="#landing-how">Changelog</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Social Row Between Two Thin Divider Lines -->
+        <div class="footer-social-row">
+          <a href="#" class="social-link">Linkedin <span class="arr">→</span></a>
+          <a href="#" class="social-link">Facebook <span class="arr">→</span></a>
+          <a href="#" class="social-link">Twitter <span class="arr">→</span></a>
+          <a href="#" class="social-link">Instagram <span class="arr">→</span></a>
+        </div>
+
+        <!-- Giant NEURIA AI Watermark Text in #1a1a1a fading to black -->
+        <div class="footer-watermark-wrap">
+          <span class="footer-giant-watermark">NEURIA AI</span>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom-bar">
+          <div class="footer-copy">© All Rights Reserved. NeuriaAI – Powered by Webflow</div>
+          <div class="footer-legal-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 2: APP AREA (FULL PRODUCT WORKSPACE) -->
+  <!-- ========================================================================= -->
+  <div id="view-app" class="spa-view">
+    
+    <!-- Top Persistent App Bar -->
+    <header class="app-top-header">
+      <div class="top-header-left">
+        <a href="#landing" class="app-logo-link" onclick="MeetwellApp.showLandingView()">
+          <span class="logo-mark-sm"></span>
+          <span class="brand-text">Neuria<span class="brand-accent">AI</span></span>
+        </a>
+
+        <!-- Workspace Selector -->
+        <div class="app-ws-selector-wrap">
+          <span class="ws-select-label">WORKSPACE:</span>
+          <select id="app-ws-select" class="app-ws-select" onchange="MeetwellApp.switchWorkspace(this.value)">
+            <!-- Options populated dynamically -->
+          </select>
+          <button class="btn-icon-tiny" onclick="MeetwellApp.startWorkspaceWizard()" title="Create New Workspace">+</button>
+        </div>
+      </div>
+
+      <div class="top-header-right">
+        <!-- Persistent Industry Chip -->
+        <div id="topbar-industry-chip" class="industry-chip">
+          <span class="chip-icon">✦</span>
+          <span id="topbar-industry-name">Information Technology</span>
+        </div>
+
+        <!-- Export Dropdown -->
+        <div class="app-export-menu-wrap">
+          <button class="btn-pill-small" onclick="MeetwellApp.toggleExportMenu()">
+            <span>Export Data</span>
+            <span class="arrow">▼</span>
+          </button>
+          <div id="app-export-dropdown" class="export-dropdown hidden">
+            <button onclick="MeetwellApp.triggerExport('pdf')">📄 Executive Report (PDF)</button>
+            <button onclick="MeetwellApp.triggerExport('txt')">📝 Full Text Briefing (TXT)</button>
+            <button onclick="MeetwellApp.triggerExport('csv')">📊 Action Items Matrix (CSV)</button>
+          </div>
+        </div>
+
+        <button class="btn-ghost-pill" onclick="MeetwellApp.showLandingView()">
+          <span>← Back to Home</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- App Body Layout: Left Sidebar + Main Content Area -->
+    <div class="app-body-container">
+      
+      <!-- Left Sidebar Navigation -->
+      <aside class="app-sidebar">
+        <div class="sidebar-group">
+          <span class="sidebar-group-title">OVERVIEW</span>
+          <button class="sidebar-tab active" data-pane="pane-dashboard" onclick="MeetwellApp.switchPane('dashboard')">
+            <span class="tab-icon">📊</span>
+            <span class="tab-text">Dashboard</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-summary" onclick="MeetwellApp.switchPane('summary')">
+            <span class="tab-icon">📄</span>
+            <span class="tab-text">Executive Summary</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-decisions" onclick="MeetwellApp.switchPane('decisions')">
+            <span class="tab-icon">⚖</span>
+            <span class="tab-text">Discussions & Decisions</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-actions" onclick="MeetwellApp.switchPane('actions')">
+            <span class="tab-icon">☑</span>
+            <span class="tab-text">Action Items & Tasks</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-timeline" onclick="MeetwellApp.switchPane('timeline')">
+            <span class="tab-icon">🕒</span>
+            <span class="tab-text">Timeline View</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-deadlines" onclick="MeetwellApp.switchPane('deadlines')">
+            <span class="tab-icon">⏳</span>
+            <span class="tab-text">Deadlines & Owners</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-risks" onclick="MeetwellApp.switchPane('risks')">
+            <span class="tab-icon">⚠️</span>
+            <span class="tab-text">Risk Detection</span>
+          </button>
+        </div>
+
+        <div class="sidebar-group">
+          <span class="sidebar-group-title">COLLABORATION</span>
+          <button class="sidebar-tab" data-pane="pane-decision-tracker" onclick="MeetwellApp.switchPane('decision-tracker')">
+            <span class="tab-icon">📌</span>
+            <span class="tab-text">Decision Tracker</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-task-tracker" onclick="MeetwellApp.switchPane('task-tracker')">
+            <span class="tab-icon">⚙</span>
+            <span class="tab-text">Smart Task Board</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-compare" onclick="MeetwellApp.switchPane('compare')">
+            <span class="tab-icon">⇄</span>
+            <span class="tab-text">Compare Meetings</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-followup" onclick="MeetwellApp.switchPane('followup')">
+            <span class="tab-icon">📋</span>
+            <span class="tab-text">Follow-up Prep</span>
+          </button>
+        </div>
+
+        <div class="sidebar-group">
+          <span class="sidebar-group-title">TOOLS & DATA</span>
+          <button class="sidebar-tab" data-pane="pane-ask" onclick="MeetwellApp.switchPane('ask')">
+            <span class="tab-icon">💬</span>
+            <span class="tab-text">Ask Your Meetings</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-reports" onclick="MeetwellApp.switchPane('reports')">
+            <span class="tab-icon">📊</span>
+            <span class="tab-text">Report Generator</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-documents" onclick="MeetwellApp.switchPane('documents')">
+            <span class="tab-icon">📁</span>
+            <span class="tab-text">Manage Documents</span>
+            <span id="sidebar-doc-count" class="sidebar-count">0</span>
+          </button>
+          <button class="sidebar-tab" data-pane="pane-settings" onclick="MeetwellApp.switchPane('settings')">
+            <span class="tab-icon">⚡</span>
+            <span class="tab-text">Settings & RAG</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Pane Display Area -->
+      <section class="app-content-area">
+        
+        <!-- PANE: DASHBOARD -->
+        <div id="pane-dashboard" class="sub-pane active">
+          
+          <!-- Persistent Disclaimer Box (Healthcare, Finance, Legal) -->
+          <div id="dash-disclaimer-card" class="disclaimer-alert-card hidden">
+            <span class="disclaimer-icon">⚖</span>
+            <span id="dash-disclaimer-text" class="disclaimer-text"></span>
+          </div>
+
+          <!-- Top 8 Metric Cards -->
+          <div class="metric-cards-grid">
+            <div class="metric-card">
+              <span class="metric-label">DOCUMENTS</span>
+              <span id="metric-docs" class="metric-value">0</span>
+              <span class="metric-sub">Indexed in workspace</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">DECISIONS</span>
+              <span id="metric-decisions" class="metric-value">0</span>
+              <span class="metric-sub">Confirmed & cataloged</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">ACTION ITEMS</span>
+              <span id="metric-actions" class="metric-value">0</span>
+              <span class="metric-sub">Assigned deliverables</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">PENDING TASKS</span>
+              <span id="metric-pending" class="metric-value">0</span>
+              <span class="metric-sub">In progress or open</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">COMPLETED</span>
+              <span id="metric-completed" class="metric-value">0</span>
+              <span class="metric-sub">Verified closed</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">UPCOMING DEADLINES</span>
+              <span id="metric-deadlines" class="metric-value">0</span>
+              <span class="metric-sub">Due in next 14 days</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">OVERDUE</span>
+              <span id="metric-overdue" class="metric-value">0</span>
+              <span class="metric-sub">Past target date</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">IDENTIFIED RISKS</span>
+              <span id="metric-risks" class="metric-value">0</span>
+              <span class="metric-sub">Potential impact items</span>
+            </div>
+          </div>
+
+          <!-- Industry Emphasis Panel -->
+          <div class="industry-emphasis-panel">
+            <div class="panel-header">
+              <span class="small-caps-label text-gold">INDUSTRY FOCUS</span>
+              <h3 id="emphasis-title" class="panel-title">Sprint Velocity & Critical Blockers</h3>
+            </div>
+            <p id="emphasis-desc" class="panel-desc">Monitoring active technical discussions, developer assignments, and architecture decisions for IT & Software Development.</p>
+            <div id="emphasis-chips" class="emphasis-chips-row">
+              <!-- Dynamically rendered category pills -->
+            </div>
+          </div>
+
+          <!-- Starter Quick Input Card on Dashboard -->
+          <div id="dash-starter-card" class="starter-banner-card mb-6">
+            <div class="starter-content">
+              <div class="input-card-header">
+                <div>
+                  <span class="small-caps-label text-gold">⚡ DIRECT MEETING INTELLIGENCE</span>
+                  <h3 class="starter-title">INPUT YOUR MEETING NOTES & GENERATE INSTANT REPORT</h3>
+                </div>
+                <div class="input-actions-row">
+                  <button type="button" class="btn-ghost-pill" onclick="MeetwellApp.loadSampleMeetingText('dash-meeting-notes')">
+                    <span>⚡ Load Example Notes</span>
+                  </button>
+                  <button type="button" class="btn-ghost-pill danger" onclick="document.getElementById('dash-meeting-notes').value = ''">
+                    <span>Clear</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="config-label">MEETING TITLE</label>
+                <input type="text" id="dash-meeting-title" class="neuria-input" placeholder="e.g. Weekly Operations & Strategy Checkpoint">
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="config-label">MEETING NOTES / TRANSCRIPT CONTENT</label>
+                <textarea id="dash-meeting-notes" class="neuria-textarea" rows="5" placeholder="Paste your meeting notes, minutes, or transcript here... (Or click '⚡ Load Example Notes' to populate instantly)"></textarea>
+              </div>
+
+              <div class="starter-buttons-row mt-4">
+                <button type="button" class="btn-pill-gold" onclick="MeetwellApp.submitDashboardMeetingInput()">
+                  <span>Process Notes & Generate Report</span>
+                  <span class="pill-sparkle">✦</span>
+                </button>
+                <button type="button" class="btn-ghost-pill" onclick="MeetwellApp.loadSampleIntoWorkspaceAndAnalyze()">
+                  <span>⚡ 1-Click Demo: Ingest Sample & Analyze</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="dashboard-charts-grid">
+            <div class="chart-card">
+              <h4 class="chart-title">Task Completion Distribution</h4>
+              <div class="chart-wrapper">
+                <canvas id="chartTaskStatus"></canvas>
+              </div>
+            </div>
+            <div class="chart-card">
+              <h4 class="chart-title">Tasks by Team & Department</h4>
+              <div class="chart-wrapper">
+                <canvas id="chartTeamTasks"></canvas>
+              </div>
+            </div>
+            <div class="chart-card">
+              <h4 class="chart-title">Risk Categories & Severity</h4>
+              <div class="chart-wrapper">
+                <canvas id="chartRisks"></canvas>
+              </div>
+            </div>
+            <div class="chart-card">
+              <h4 class="chart-title">Decision Governance Breakdown</h4>
+              <div class="chart-wrapper">
+                <canvas id="chartDecisions"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Bar -->
+          <div class="dash-quick-actions">
+            <span class="small-caps-label text-gold">QUICK ACTIONS:</span>
+            <button class="btn-pill-small" onclick="MeetwellApp.switchPane('documents')">Upload Transcripts ↗</button>
+            <button class="btn-pill-small" onclick="MeetwellApp.switchPane('summary')">View Summary ↗</button>
+            <button class="btn-pill-small" onclick="MeetwellApp.switchPane('ask')">Ask Questions ↗</button>
+            <button class="btn-pill-small" onclick="MeetwellApp.switchPane('reports')">Generate Report ↗</button>
+          </div>
+        </div>
+
+        <!-- PANE: MANAGE DOCUMENTS / UPLOAD -->
+        <div id="pane-documents" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">TRANSCRIPT REPOSITORY</span>
+              <h2 class="pane-title">DOCUMENT INGESTION & VECTORS</h2>
+            </div>
+            <button class="btn-ghost-pill danger" onclick="MeetwellApp.clearAllDocuments()">Clear All Documents</button>
+          </div>
+
+          <!-- Ingestion Mode Tabs -->
+          <div class="doc-input-tabs-nav mb-4">
+            <button class="doc-tab-btn active" id="tab-btn-file-upload" onclick="MeetwellApp.switchDocInputTab('file')">📁 Upload PDF / TXT</button>
+            <button class="doc-tab-btn" id="tab-btn-text-paste" onclick="MeetwellApp.switchDocInputTab('paste')">✏️ Paste Meeting Notes</button>
+          </div>
+
+          <!-- Drag and Drop Dropzone -->
+          <div id="upload-dropzone" class="upload-dropzone" ondragover="MeetwellApp.handleDragOver(event)" ondragleave="MeetwellApp.handleDragLeave(event)" ondrop="MeetwellApp.handleDrop(event)">
+            <input type="file" id="file-input" multiple accept=".pdf,.txt" style="display:none" onchange="MeetwellApp.handleFileInput(this.files)">
+            <div class="dropzone-inner">
+              <div class="dropzone-icon">📥</div>
+              <h3 class="dropzone-title">DRAG & DROP MEETING TRANSCRIPTS</h3>
+              <p class="dropzone-sub">Accepts <strong>PDF</strong> and <strong>TXT</strong> files. Pages are extracted, chunked, and embedded into in-memory ChromaDB vectors.</p>
+              <button class="btn-pill-gold mt-4" onclick="document.getElementById('file-input').click()">
+                <span>Select Files</span>
+                <span class="pill-sparkle">✦</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Text Paste Dropzone -->
+          <div id="paste-input-box" class="user-input-card hidden mb-6">
+            <div class="input-card-header">
+              <div>
+                <span class="small-caps-label text-gold">TEXT INPUT</span>
+                <h3 class="sub-heading">Paste Meeting Notes or Transcript</h3>
+              </div>
+              <div class="input-actions-row">
+                <button type="button" class="btn-ghost-pill" onclick="MeetwellApp.loadSampleMeetingText('doc-paste-content')">Load Sample Notes</button>
+                <button type="button" class="btn-ghost-pill danger" onclick="document.getElementById('doc-paste-content').value = ''">Clear</button>
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <label class="config-label">DOCUMENT / MEETING TITLE</label>
+              <input type="text" id="doc-paste-title" class="neuria-input" placeholder="e.g. Weekly Operations Sync">
+            </div>
+            <div class="form-group mt-3">
+              <label class="config-label">TRANSCRIPT CONTENT</label>
+              <textarea id="doc-paste-content" class="neuria-textarea" rows="7" placeholder="Paste your meeting notes or transcript here... (Or click 'Load Sample Notes' above to populate automatically)"></textarea>
+            </div>
+            <div class="mt-4">
+              <button type="button" class="btn-pill-gold" onclick="MeetwellApp.submitPastedMeetingText()">
+                <span>Process & Analyze Notes</span>
+                <span class="pill-sparkle">✦</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Upload Status / Queue -->
+          <div id="upload-status-box" class="upload-status-box hidden">
+            <h4 class="sub-heading">Upload Queue</h4>
+            <div id="upload-items-list" class="upload-items-list"></div>
+          </div>
+
+          <!-- Document Table -->
+          <div class="doc-table-card mt-6">
+            <h4 class="sub-heading">Uploaded Transcripts</h4>
+            <div class="table-responsive">
+              <table class="neuria-table">
+                <thead>
+                  <tr>
+                    <th>DOCUMENT NAME</th>
+                    <th>TYPE</th>
+                    <th>SIZE</th>
+                    <th>PAGES</th>
+                    <th>CHUNKS</th>
+                    <th>UPLOADED</th>
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody id="doc-table-body">
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE: EXECUTIVE SUMMARY -->
+        <div id="pane-summary" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">EXECUTIVE INTELLIGENCE</span>
+              <h2 class="pane-title">MEETING SUMMARY</h2>
+            </div>
+            <div class="summary-subtabs-wrap" id="summary-subtabs">
+              <button class="subtab-btn" data-len="short" onclick="MeetwellApp.fetchSummary('short')">Short</button>
+              <button class="subtab-btn active" data-len="standard" onclick="MeetwellApp.fetchSummary('standard')">Standard</button>
+              <button class="subtab-btn" data-len="detailed" onclick="MeetwellApp.fetchSummary('detailed')">Detailed</button>
+            </div>
+          </div>
+
+          <div id="summary-content-wrap" class="summary-content-wrap mt-4">
+            <div class="empty-state-card">
+              <p>Upload a meeting transcript or paste notes to generate an executive intelligence summary.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE: DISCUSSIONS & DECISIONS -->
+        <div id="pane-decisions" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">GOVERNANCE & LOGS</span>
+              <h2 class="pane-title">DISCUSSIONS & DECISIONS</h2>
+            </div>
+            <button class="btn-pill-small" onclick="MeetwellApp.fetchDecisions(true)">Extract Decisions ↗</button>
+          </div>
+
+          <!-- Sub-tabs: Confirmed | Proposals | Unresolved -->
+          <div class="decisions-subtabs-nav mt-3">
+            <button class="dec-tab-btn active" onclick="MeetwellApp.switchDecisionsTab('confirmed')">
+              <span>Confirmed Decisions</span>
+              <span id="badge-confirmed-count" class="count-badge">0</span>
+            </button>
+            <button class="dec-tab-btn" onclick="MeetwellApp.switchDecisionsTab('suggestions')">
+              <span>Proposals & Suggestions</span>
+              <span id="badge-suggestions-count" class="count-badge">0</span>
+            </button>
+            <button class="dec-tab-btn" onclick="MeetwellApp.switchDecisionsTab('unresolved')">
+              <span>Unresolved Discussions</span>
+              <span id="badge-unresolved-count" class="count-badge">0</span>
+            </button>
+          </div>
+
+          <div id="decisions-cards-wrap" class="decisions-cards-grid mt-4">
+            <!-- Dynamically populated cards -->
+          </div>
+        </div>
+
+        <!-- PANE: ACTION ITEMS & TASKS -->
+        <div id="pane-actions" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">DELIVERABLES MATRIX</span>
+              <h2 class="pane-title">ACTION ITEMS</h2>
+            </div>
+            <div class="actions-header-btns">
+              <button class="btn-pill-small" onclick="MeetwellApp.triggerExport('csv')">Export CSV ↗</button>
+              <button class="btn-ghost-pill" onclick="MeetwellApp.fetchActionItems(true)">Re-Extract</button>
+            </div>
+          </div>
+
+          <!-- Filters Row -->
+          <div class="actions-filters-bar mt-4">
+            <div class="filter-col">
+              <label>PRIORITY</label>
+              <select id="action-priority-filter" onchange="MeetwellApp.filterActionItems()">
+                <option value="all">All Priorities</option>
+                <option value="High">High Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="Low">Low Priority</option>
+              </select>
+            </div>
+            <div class="filter-col">
+              <label>STATUS</label>
+              <select id="action-status-filter" onchange="MeetwellApp.filterActionItems()">
+                <option value="all">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+            <div class="filter-col">
+              <label>RESPONSIBLE TEAM</label>
+              <select id="action-dept-filter" onchange="MeetwellApp.filterActionItems()">
+                <option value="all">All Teams</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Action Items Table -->
+          <div class="table-responsive mt-4">
+            <table class="neuria-table">
+              <thead>
+                <tr>
+                  <th>TASK</th>
+                  <th>ASSIGNEE</th>
+                  <th>TEAM</th>
+                  <th>DEADLINE</th>
+                  <th>STATUS</th>
+                  <th>PRIORITY</th>
+                  <th>SOURCE</th>
+                </tr>
+              </thead>
+              <tbody id="action-items-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PANE: DEADLINES & RESPONSIBILITIES -->
+        <div id="pane-deadlines" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">ACCOUNTABILITY AUDIT</span>
+              <h2 class="pane-title">DEADLINES & RESPONSIBILITIES</h2>
+            </div>
+            <button class="btn-pill-small" onclick="MeetwellApp.fetchDeadlines(true)">Refresh Deadlines ↗</button>
+          </div>
+
+          <div class="deadlines-sections-grid mt-4">
+            <!-- Overdue / Immediate Action Section -->
+            <div class="deadline-section-card urgent-border">
+              <div class="card-head">
+                <span class="status-indicator red"></span>
+                <h3 class="card-title">OVERDUE / IMMEDIATE ATTENTION</h3>
+              </div>
+              <div id="deadlines-urgent-wrap" class="deadlines-list mt-3">
+                <div class="empty-state-small">No overdue items detected.</div>
+              </div>
+            </div>
+
+            <!-- Upcoming 14 Days Section -->
+            <div class="deadline-section-card">
+              <div class="card-head">
+                <span class="status-indicator yellow"></span>
+                <h3 class="card-title">UPCOMING DELIVERABLES (NEXT 14 DAYS)</h3>
+              </div>
+              <div id="deadlines-upcoming-wrap" class="deadlines-list mt-3">
+                <div class="empty-state-small">No upcoming deadlines logged.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE: RISK DETECTION -->
+        <div id="pane-risks" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">EARLY WARNING RADAR</span>
+              <h2 class="pane-title">RISK DETECTION</h2>
+            </div>
+            <button class="btn-pill-small" onclick="MeetwellApp.fetchRisks(true)">Scan Risks ↗</button>
+          </div>
+
+          <div id="risks-cards-wrap" class="risks-cards-grid mt-4">
+            <!-- Dynamically populated cards -->
+          </div>
+        </div>
+
+        <!-- PANE: DECISION TRACKER -->
+        <div id="pane-decision-tracker" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">GOVERNANCE AUDIT</span>
+              <h2 class="pane-title">DECISION TRACKER</h2>
+            </div>
+          </div>
+
+          <div class="table-responsive mt-4">
+            <table class="neuria-table">
+              <thead>
+                <tr>
+                  <th>DECISION</th>
+                  <th>RATIONALE</th>
+                  <th>DEPARTMENT</th>
+                  <th>DATE</th>
+                  <th>CURRENT STATUS</th>
+                  <th>UPDATE</th>
+                </tr>
+              </thead>
+              <tbody id="decision-tracker-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PANE: SMART TASK TRACKER (KANBAN) -->
+        <div id="pane-task-tracker" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">WORKFLOW BOARD</span>
+              <h2 class="pane-title">SMART TASK BOARD</h2>
+            </div>
+            <button class="btn-ghost-pill" onclick="MeetwellApp.fetchTaskTracker()">Refresh Board</button>
+          </div>
+
+          <div class="kanban-board-grid mt-4">
+            <!-- Column 1: Pending -->
+            <div class="kanban-column" id="kanban-pending-col">
+              <div class="kanban-col-header">
+                <span class="col-dot pending"></span>
+                <span class="col-title">PENDING</span>
+                <span class="col-count" id="count-kanban-pending">0</span>
+              </div>
+              <div class="kanban-cards-list" id="cards-kanban-pending"></div>
+            </div>
+
+            <!-- Column 2: In Progress -->
+            <div class="kanban-column" id="kanban-progress-col">
+              <div class="kanban-col-header">
+                <span class="col-dot in-progress"></span>
+                <span class="col-title">IN PROGRESS</span>
+                <span class="col-count" id="count-kanban-in_progress">0</span>
+              </div>
+              <div class="kanban-cards-list" id="cards-kanban-in_progress"></div>
+            </div>
+
+            <!-- Column 3: Completed -->
+            <div class="kanban-column" id="kanban-completed-col">
+              <div class="kanban-col-header">
+                <span class="col-dot completed"></span>
+                <span class="col-title">COMPLETED</span>
+                <span class="col-count" id="count-kanban-completed">0</span>
+              </div>
+              <div class="kanban-cards-list" id="cards-kanban-completed"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE: TIMELINE VIEW -->
+        <div id="pane-timeline" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">CHRONOLOGICAL RECORD</span>
+              <h2 class="pane-title">OPERATIONAL TIMELINE</h2>
+            </div>
+            <button class="btn-pill-small" onclick="MeetwellApp.fetchTimeline(true)">Rebuild Timeline ↗</button>
+          </div>
+
+          <div id="timeline-events-wrap" class="timeline-tree-wrap mt-4">
+            <!-- Dynamically populated events -->
+          </div>
+        </div>
+
+        <!-- PANE: COMPARE MEETINGS -->
+        <div id="pane-compare" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">CROSS-MEETING INTELLIGENCE</span>
+              <h2 class="pane-title">COMPARE MEETINGS</h2>
+            </div>
+            <button class="btn-pill-small" onclick="MeetwellApp.fetchMeetingComparison(true)">Run Cross-Comparison ↗</button>
+          </div>
+
+          <div id="compare-content-wrap" class="compare-content-wrap mt-4">
+            <div class="empty-state-card">
+              <p>Upload or paste multiple meeting notes to identify newly confirmed decisions, recurring bottlenecks, and progress across dates.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE: FOLLOW-UP PREP -->
+        <div id="pane-followup" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">EXECUTIVE BRIEFING</span>
+              <h2 class="pane-title">FOLLOW-UP MEETING PREP</h2>
+            </div>
+            <button class="btn-pill-small" onclick="MeetwellApp.fetchFollowupPrep(true)">Regenerate Prep Pack ↗</button>
+          </div>
+
+          <div id="followup-content-wrap" class="followup-content-wrap mt-4">
+            <div class="empty-state-card">
+              <p>Prepare an executive briefing with recaps, pending action items, unresolved questions, and a structured agenda for your upcoming meeting.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE: KPI INSIGHTS -->
+        <div id="pane-kpis" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">EXPLICIT METRICS</span>
+              <h2 class="pane-title">KEY PERFORMANCE INDICATORS</h2>
+            </div>
+            <button class="btn-pill-small" onclick="MeetwellApp.fetchKPIs(true)">Extract KPIs ↗</button>
+          </div>
+
+          <p class="section-lead text-muted"><span class="text-gold">✦ Guardrail:</span> Only explicit KPI targets and numbers stated in the meeting text are extracted. Zero fabricated metrics.</p>
+
+          <div id="kpi-grid-wrap" class="kpi-cards-grid mt-4">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- PANE: REPORT GENERATOR -->
+        <div id="pane-reports" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">EXECUTIVE COMPILATION</span>
+              <h2 class="pane-title">INDUSTRY REPORT GENERATOR</h2>
+            </div>
+          </div>
+
+          <!-- DIRECT USER INPUT SECTION -->
+          <div class="user-input-card mb-6">
+            <div class="input-card-header">
+              <div>
+                <span class="small-caps-label text-gold">DIRECT USER INPUT</span>
+                <h3 class="sub-heading">Provide Meeting Minutes or Transcript</h3>
+              </div>
+              <div class="input-actions-row">
+                <button type="button" class="btn-ghost-pill" onclick="MeetwellApp.loadSampleMeetingText('report-notes-input')">
+                  <span>⚡ Load Example Notes</span>
+                </button>
+                <button type="button" class="btn-ghost-pill danger" onclick="document.getElementById('report-notes-input').value = ''">
+                  <span>Clear</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group mt-3">
+              <label class="config-label">MEETING TITLE</label>
+              <input type="text" id="report-title-input" class="neuria-input" placeholder="e.g. Q4 Executive Strategy & Operations Review">
+            </div>
+
+            <div class="form-group mt-3">
+              <label class="config-label">MEETING NOTES / TRANSCRIPT CONTENT</label>
+              <textarea id="report-notes-input" class="neuria-textarea" rows="8" placeholder="Paste your meeting notes, minutes, or transcript here... (Or click 'Load Example Notes' to populate instantly with realistic industry discussions)"></textarea>
+            </div>
+          </div>
+
+          <div class="report-config-panel">
+            <div class="config-row">
+              <div class="config-col">
+                <label class="config-label">REPORT TYPE</label>
+                <select id="report-type-select" class="config-select">
+                  <option value="complete">Complete Comprehensive Report</option>
+                  <option value="executive">Executive Summary Report</option>
+                  <option value="short">Short Briefing Report</option>
+                  <option value="detailed">Detailed Technical Report</option>
+                </select>
+              </div>
+              <div class="config-col">
+                <label class="config-label">LANGUAGE</label>
+                <select id="report-lang-select" class="config-select">
+                  <option value="English">English</option>
+                  <option value="Spanish">Spanish</option>
+                  <option value="French">French</option>
+                  <option value="German">German</option>
+                  <option value="Japanese">Japanese</option>
+                  <option value="Chinese">Chinese</option>
+                </select>
+              </div>
+              <div class="config-col btn-col">
+                <button class="btn-pill-gold" onclick="MeetwellApp.generateReport()">
+                  <span>Generate Report</span>
+                  <span class="pill-sparkle">✦</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Customizable Sections Picker -->
+            <div class="sections-picker-box mt-4">
+              <label class="config-label">INCLUDE SECTIONS</label>
+              <div class="checkbox-pills-row" id="report-sections-checkboxes">
+                <label class="cb-pill"><input type="checkbox" value="Executive Summary" checked> Executive Summary</label>
+                <label class="cb-pill"><input type="checkbox" value="Meeting Overview" checked> Meeting Overview</label>
+                <label class="cb-pill"><input type="checkbox" value="Discussions" checked> Discussions</label>
+                <label class="cb-pill"><input type="checkbox" value="Decisions & Rationale" checked> Decisions & Rationale</label>
+                <label class="cb-pill"><input type="checkbox" value="Action Items & Owners" checked> Action Items</label>
+                <label class="cb-pill"><input type="checkbox" value="Deadlines" checked> Deadlines</label>
+                <label class="cb-pill"><input type="checkbox" value="Risks & Contingencies" checked> Risks</label>
+                <label class="cb-pill"><input type="checkbox" value="AI Recommendations" checked> Recommendations (AI)</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Report Viewer & Export Buttons -->
+          <div id="report-viewer-card" class="report-viewer-card hidden mt-6">
+            <div class="report-viewer-header">
+              <h3 id="report-viewer-title" class="report-heading">NEURIA REPORT</h3>
+              <div class="report-actions-row">
+                <button class="btn-pill-small" onclick="MeetwellApp.triggerExport('pdf')">Download PDF ↗</button>
+                <button class="btn-ghost-pill" onclick="MeetwellApp.triggerExport('txt')">Download TXT ↗</button>
+              </div>
+            </div>
+            <div id="report-viewer-body" class="report-viewer-body"></div>
+          </div>
+        </div>
+
+        <!-- PANE: ASK YOUR MEETINGS (RAG Chat with Citations) -->
+        <div id="pane-ask" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">CONVERSATIONAL RETRIEVAL</span>
+              <h2 class="pane-title">ASK YOUR MEETINGS</h2>
+            </div>
+            <button class="btn-ghost-pill" onclick="MeetwellApp.clearChatHistory()">Clear Chat</button>
+          </div>
+
+          <p class="section-lead">Strict RAG semantic search. Returns document citations with page numbers and exact excerpts. Responds <em>"I couldn't find this information in the uploaded meeting documents"</em> if not present in context.</p>
+
+          <!-- Suggested Industry Questions -->
+          <div class="suggested-questions-row">
+            <span class="small-caps-label text-gold">SUGGESTED QUESTIONS:</span>
+            <div id="suggested-questions-chips" class="questions-chips-wrap">
+              <!-- Dynamically populated per industry -->
+            </div>
+          </div>
+
+          <!-- Chat Window -->
+          <div class="chat-container-card mt-4">
+            <div id="chat-messages-wrap" class="chat-messages-wrap">
+              <div class="chat-message assistant">
+                <div class="chat-bubble">
+                  <p>Welcome to <strong>NeuriaAI Ask</strong>. Ask any question about your uploaded meeting minutes, sprint discussions, action items, or decisions.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Input Bar -->
+            <form id="chat-form" class="chat-input-form" onsubmit="MeetwellApp.submitChatQuery(event)">
+              <input type="text" id="chat-query-input" placeholder="Type your question about these meetings..." autocomplete="off">
+              <button type="submit" class="btn-chat-send" id="chat-send-btn">
+                <span>Ask</span>
+                <span class="arrow">↗</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- PANE: SETTINGS & ISOLATION -->
+        <div id="pane-settings" class="sub-pane">
+          <div class="pane-header">
+            <div>
+              <span class="small-caps-label text-gold">CONFIGURATION</span>
+              <h2 class="pane-title">WORKSPACE & RAG SETTINGS</h2>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            <div class="settings-card">
+              <h3 class="sub-heading">Workspace Details</h3>
+              <div class="form-group mt-3">
+                <label>Workspace Name</label>
+                <input type="text" id="setting-ws-name" class="neuria-input">
+              </div>
+              <div class="form-group mt-3">
+                <label>Industry Specialization</label>
+                <select id="setting-ws-industry" class="neuria-input">
+                  <!-- Options populated dynamically -->
+                </select>
+              </div>
+              <button class="btn-pill-small mt-4" onclick="MeetwellApp.saveWorkspaceDetails()">Save Changes ↗</button>
+            </div>
+
+            <div class="settings-card">
+              <h3 class="sub-heading">RAG & ChromaDB Tuning</h3>
+              <div class="form-group mt-3">
+                <label>Chunk Size (Characters)</label>
+                <input type="number" id="setting-chunk-size" min="200" max="3000" step="50" class="neuria-input">
+              </div>
+              <div class="form-group mt-3">
+                <label>Chunk Overlap (Characters)</label>
+                <input type="number" id="setting-chunk-overlap" min="0" max="400" step="25" class="neuria-input">
+              </div>
+              <div class="form-group mt-3">
+                <label>Top-K Chunks to Retrieve</label>
+                <input type="number" id="setting-top-k" min="1" max="15" class="neuria-input">
+              </div>
+              <div class="form-group mt-4">
+                <label class="toggle-label">
+                  <input type="checkbox" id="setting-cross-ws">
+                  <span>Enable Cross-Workspace Retrieval (Defaults to strictly isolated)</span>
+                </label>
+              </div>
+              <button class="btn-pill-small mt-4" onclick="MeetwellApp.saveRAGSettings()">Save RAG Settings ↗</button>
+            </div>
+
+            <div class="settings-card danger-card">
+              <h3 class="sub-heading text-danger">Danger Zone</h3>
+              <p class="muted-text">Deleting this workspace will immediately remove all associated vector embeddings from in-memory ChromaDB and purge derived intelligence.</p>
+              <button class="btn-ghost-pill danger mt-4" onclick="MeetwellApp.deleteCurrentWorkspace()">Delete Workspace Permanently</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: 3-STEP ONBOARDING WIZARD -->
+  <!-- ========================================================================= -->
+  <div id="modal-wizard" class="neuria-modal-overlay hidden">
+    <div class="wizard-modal-box">
+      <div class="wizard-header">
+        <div class="wizard-steps-indicator">
+          <span class="step-dot active" id="step-dot-1">1</span>
+          <span class="step-connector"></span>
+          <span class="step-dot" id="step-dot-2">2</span>
+          <span class="step-connector"></span>
+          <span class="step-dot" id="step-dot-3">3</span>
+        </div>
+        <button class="modal-close-btn" onclick="MeetwellApp.closeWizard()">✕</button>
+      </div>
+
+      <!-- Step 1: Select Industry -->
+      <div id="wizard-step-1" class="wizard-step active">
+        <span class="small-caps-label text-gold">STEP 01</span>
+        <h3 class="wizard-title">SELECT INDUSTRY DOMAIN</h3>
+        <p class="wizard-sub">Choose your domain ontology to configure terminology, report structures, and compliance rules.</p>
+        
+        <div id="wizard-industry-grid" class="wizard-industry-grid">
+          <!-- Populated dynamically with 15 industries + Other -->
+        </div>
+
+        <div id="wizard-other-inputs" class="wizard-other-inputs hidden mt-4">
+          <div class="form-group">
+            <label>Custom Industry Name</label>
+            <input type="text" id="wizard-custom-name" placeholder="e.g. Renewable Energy & Grid Ops" class="neuria-input">
+          </div>
+          <div class="form-group mt-2">
+            <label>Industry Focus / Description</label>
+            <input type="text" id="wizard-custom-desc" placeholder="e.g. Solar installations, inverter telemetry, grid permits" class="neuria-input">
+          </div>
+        </div>
+
+        <div class="wizard-nav-row mt-6">
+          <span></span>
+          <button class="btn-pill-gold" onclick="MeetwellApp.wizardNextStep(2)">
+            <span>Next: Workspace ↗</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Name Workspace -->
+      <div id="wizard-step-2" class="wizard-step">
+        <span class="small-caps-label text-gold">STEP 02</span>
+        <h3 class="wizard-title">NAME YOUR WORKSPACE</h3>
+        <p class="wizard-sub">Workspaces are isolated data partitions with independent vector indices and intelligence caches.</p>
+        
+        <div class="form-group mt-4">
+          <label>Workspace Title</label>
+          <input type="text" id="wizard-ws-name" placeholder="e.g. Core Engineering Sprint Review" class="neuria-input">
+        </div>
+
+        <div class="wizard-nav-row mt-6">
+          <button class="btn-ghost-pill" onclick="MeetwellApp.wizardPrevStep(1)">Back</button>
+          <button class="btn-pill-gold" onclick="MeetwellApp.wizardNextStep(3)">
+            <span>Next: Upload ↗</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Ingest Documents -->
+      <div id="wizard-step-3" class="wizard-step">
+        <span class="small-caps-label text-gold">STEP 03</span>
+        <h3 class="wizard-title">INGEST MEETING NOTES</h3>
+        <p class="wizard-sub">Upload PDF/TXT files, or paste your meeting minutes directly.</p>
+        
+        <div class="wizard-upload-area" onclick="document.getElementById('wizard-file-input').click()">
+          <input type="file" id="wizard-file-input" multiple accept=".pdf,.txt" style="display:none" onchange="MeetwellApp.handleWizardFiles(this.files)">
+          <div class="dropzone-icon">📥</div>
+          <p><strong>Click to choose PDF or TXT transcripts</strong></p>
+          <span class="text-muted small">You can drag and drop multiple files here.</span>
+        </div>
+
+        <div id="wizard-file-list" class="wizard-file-list mt-3"></div>
+
+        <div class="wizard-text-paste-section mt-4">
+          <div class="input-card-header">
+            <span class="small-caps-label text-gold">OR PASTE NOTES DIRECTLY</span>
+            <button type="button" class="btn-ghost-pill" onclick="MeetwellApp.loadSampleMeetingText('wizard-notes-input')">⚡ Load Sample Notes</button>
+          </div>
+          <textarea id="wizard-notes-input" class="neuria-textarea mt-2" rows="4" placeholder="Paste meeting notes, transcript, or discussion points here..."></textarea>
+        </div>
+
+        <div class="wizard-nav-row mt-6">
+          <button class="btn-ghost-pill" onclick="MeetwellApp.wizardPrevStep(2)">Back</button>
+          <button class="btn-pill-gold" id="wizard-finish-btn" onclick="MeetwellApp.finishWizard()">
+            <span>Create Workspace & Generate Report ↗</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <!-- ========================================================================= -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Loading State Overlay -->
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="spinner-gold"></div>
+    <p id="loading-message" class="loading-message">Processing meeting intelligence...</p>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
